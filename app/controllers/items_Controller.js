@@ -35,12 +35,16 @@ module.exports = {
         }
     },
     editItem: async (req, res, next) => {
-        let body = req.body || {};
-        const data = await main_Service.editItem({ 'id': req.params.id, 'body': body }, { 'task': 'edit' })
-        res.status(200).json({
-            success: true,
-            data: data
-        })
+        const body = req.body || {};
+        const err = validateReq(req, res, next);
+
+        if (!err) {
+            const data = await main_Service.editItem({ 'id': req.params.id, 'body': body }, { 'task': 'edit' })
+            res.status(200).json({
+                success: true,
+                data: data
+            })
+        }
     },
     deleteItem: async (req, res, next) => {
         const data = await main_Service.deleteItem({ 'id': req.params.id }, { 'task': 'one' })

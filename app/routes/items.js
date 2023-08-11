@@ -11,7 +11,7 @@ router.get('/:id', asyncHandler(main_Controller.getItemById));
 
 router.post('/add', main_Validate.validator(), asyncHandler(main_Controller.addItem));
 
-router.put('/edit/:id', asyncHandler(main_Controller.editItem));
+router.put('/edit/:id', main_Validate.validator(), asyncHandler(main_Controller.editItem));
 
 router.delete('/delete/:id', asyncHandler(main_Controller.deleteItem));
 
