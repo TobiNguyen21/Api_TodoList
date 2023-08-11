@@ -5,6 +5,8 @@ const validateReq = require('../utils/validateReq');
 module.exports = {
     getListItems: async (req, res, next) => {
         const data = await main_Service.listItems(req.query, { 'task': 'all' })
+        if (!data) return res.status(200).json({ success: true, data: 'No data' });
+
         res.status(200).json({
             success: true,
             count: data.length,
@@ -12,7 +14,9 @@ module.exports = {
         })
     },
     getItemById: async (req, res, next) => {
-        const data = await main_Service.listItems({ 'id': req.params.id }, { 'task': 'one' })
+        const data = await main_Service.listItems({ 'id': req.params.id }, { 'task': 'one' });
+        if (!data) return res.status(200).json({ success: true, data: 'No data' });
+
         res.status(200).json({
             success: true,
             data: data
