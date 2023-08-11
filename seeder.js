@@ -3,7 +3,8 @@ const fs = require('fs');
 
 const databaseConfig = require('./app/configs/database');
 
-const _dirFile = __dirname + '/app/_data/items.json';
+const _dirFile_Items = __dirname + '/app/_data/items.json';
+const _dirFile_Careers = __dirname + '/app/_data/careers.json';
 
 (async () => {
     try {
@@ -12,15 +13,24 @@ const _dirFile = __dirname + '/app/_data/items.json';
     } catch (error) {
         console.log('Error connecting to database');
     }
-})()
+})();
 
 const Item = require('./app/models/items');
-const items = JSON.parse(fs.readFileSync(_dirFile, 'utf-8'));
+const Career = require('./app/models/careers');
+
+const items = JSON.parse(fs.readFileSync(_dirFile_Items, 'utf-8'));
+const careers = JSON.parse(fs.readFileSync(_dirFile_Careers, 'utf-8'));
 
 const importData = async () => {
     try {
-        await Item.create(items);
+        const promises = [
+            Item.create(items),
+            Career.create(careers)
+        ];
+
+        await Promise.all(promises);
         console.log('import data success');
+
     } catch (error) {
         console.log('import data fail');
         console.log(error);
@@ -30,7 +40,12 @@ const importData = async () => {
 
 const deleteData = async () => {
     try {
-        await Item.deleteMany({});
+        const promises = [
+            Item.deleteMany({}),
+            Career.deleteMany({})
+        ];
+
+        await Promise.all(promises);
         console.log('delete data success');
     } catch (error) {
         console.log('delete data fail');
