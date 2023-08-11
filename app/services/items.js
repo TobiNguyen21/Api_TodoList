@@ -2,16 +2,33 @@ const MainModel = require('../models/items');
 
 module.exports = {
     listItems: (params, option) => {
-        let sort = {};
-        let objWhere = {};
-        if (params.keyword !== '') objWhere.name = new RegExp(params.keyword, 'i');
-        if (params.sortField) sort[params.sortField] = params.sortType;
+        // Find
+        let queryFind = { ...params };
+        ['select', 'sort', 'page', 'limit'].forEach(param => delete queryFind[param]);
+        let queryStr = JSON.stringify(queryFind);
+        queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, find => `$${find}`);
+        const find = JSON.parse(queryStr);
+        // .Find
+
+        // Select
+        const select = (params.select) ? params.select.split(',').join(' ') : '';
+        // .Select
+
+        // Sort
+        const sort = (params.sort) ? params.sort.split(',').join(' ') : '';
+        // .Sort
+
+        // Pagination
+        const page = parseInt(params.page) || 1;
+        const limit = parseInt(params.limit) || null;
+        const skip = (page - 1) * limit;
+        // .Pagination
 
         if (option.task == 'all') {
             return MainModel
-                .find(objWhere)
-                .select({})
-                .sort(sort)
+                .find(find)
+                .select(select)
+                .sort(sort).skip(skip).limit(limit);
         }
         if (option.task == 'one') {
             return MainModel

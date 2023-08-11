@@ -4,14 +4,10 @@ const validateReq = require('../utils/validateReq');
 
 module.exports = {
     getListItems: async (req, res, next) => {
-        let params = [];
-        params.keyword = req.query.keyword || '';
-        params.sortField = req.query.orderBy || '';
-        params.sortType = req.query.orderDir || '';
-
-        const data = await main_Service.listItems(params, { 'task': 'all' })
+        const data = await main_Service.listItems(req.query, { 'task': 'all' })
         res.status(200).json({
             success: true,
+            count: data.length,
             data: data
         })
     },
