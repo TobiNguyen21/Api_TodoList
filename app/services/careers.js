@@ -1,7 +1,7 @@
 const MainModel = require('../models/careers');
 
 module.exports = {
-    listItems: (params, option) => {
+    listItems: async (params, option) => {
         // Find
         let queryFind = { ...params };
         ['select', 'sort', 'page', 'limit'].forEach(param => delete queryFind[param]);
@@ -25,30 +25,36 @@ module.exports = {
         // .Pagination
 
         if (option.task == 'all') {
-            return MainModel
+            return await MainModel
                 .find(find)
                 .select(select)
                 .sort(sort).skip(skip).limit(limit);
         }
         if (option.task == 'one') {
-            return MainModel
+            return await MainModel
                 .findById(params.id)
                 .select({})
         }
     },
-    create: (item) => {
-        return new MainModel(item).save();
+    create: async (item) => {
+        return await new MainModel(item).save();
     },
-    deleteItem: (params, option) => {
+    deleteItem: async (params, option) => {
         if (option.task == 'one') {
-            return MainModel
+            return await MainModel
                 .deleteOne({ _id: params.id })
         }
     },
-    editItem: (params, option) => {
+    editItem: async (params, option) => {
         if (option.task == 'edit') {
-            return MainModel
+            return await MainModel
                 .updateOne({ _id: params.id }, params.body)
         }
     },
+    eventItem: async (params, option) => {
+        console.log("params", params);
+        const type = params.type;
+        if (type != 'like' && type != 'dislike') return;
+        return await MainModel.findByIdAndUpdate(params.id, { $inc: { [type]: 1 } }, { new: true });
+    }
 }

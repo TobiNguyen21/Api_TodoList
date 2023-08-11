@@ -13,6 +13,8 @@ router.post('/add', main_Validate.validator(), asyncHandler(main_Controller.addI
 
 router.put('/edit/:id', main_Validate.validator(), asyncHandler(main_Controller.editItem));
 
+router.put('/event/:type/:id', asyncHandler(main_Controller.eventItem))
+
 router.delete('/delete/:id', asyncHandler(main_Controller.deleteItem));
 
 module.exports = router;
