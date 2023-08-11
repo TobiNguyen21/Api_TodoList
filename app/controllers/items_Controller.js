@@ -5,7 +5,7 @@ const validateReq = require('../utils/validateReq');
 module.exports = {
     getListItems: async (req, res, next) => {
         const data = await main_Service.listItems(req.query, { 'task': 'all' })
-        if (!data) return res.status(200).json({ success: true, data: 'No data' });
+        if (!data || data.length === 0) return res.status(200).json({ success: true, count: 0, data: 'No data' });
         res.status(200).json({
             success: true,
             count: data.length,
