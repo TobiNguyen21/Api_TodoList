@@ -21,10 +21,8 @@ module.exports = {
         })
     },
     addItem: async (req, res, next) => {
-        let params = [];
-        params.name = req.body.name;
-        params.status = req.body.status;
-        const data = await main_Service.create(params);
+        const item = req.body || {};
+        const data = await main_Service.create(item);
 
         res.status(201).json({
             success: true,
@@ -32,7 +30,7 @@ module.exports = {
         })
     },
     editItem: async (req, res, next) => {
-        let body = req.body;
+        let body = req.body || {};
         const data = await main_Service.editItem({ 'id': req.params.id, 'body': body }, { 'task': 'edit' })
         res.status(200).json({
             success: true,

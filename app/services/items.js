@@ -10,13 +10,13 @@ module.exports = {
         if (option.task == 'all') {
             return MainModel
                 .find(objWhere)
-                .select('name status')
+                .select('')
                 .sort(sort)
         }
         if (option.task == 'one') {
             return MainModel
                 .findById(params.id)
-                .select('name status')
+                .select('')
         }
     },
     create: (item) => {

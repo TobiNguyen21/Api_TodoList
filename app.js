@@ -5,7 +5,6 @@ const morgan = require('morgan')
 const colors = require('colors');
 const errorHandler = require('./app/middleware/error');
 
-
 const mongoose = require('mongoose');
 const app = express();
 app.use(express.json());
