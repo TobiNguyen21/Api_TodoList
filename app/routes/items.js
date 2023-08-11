@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('../middleware/async')
 
-const main_Controller = require('../controllers/items_Controller');
+const main_Controller = require(`../controllers/items_Controller`);
+const main_Validate = require('../validates/items');
 
 router.get('/', asyncHandler(main_Controller.getListItems));
 
 router.get('/:id', asyncHandler(main_Controller.getItemById));
 
-router.post('/add', asyncHandler(main_Controller.addItem));
+router.post('/add', main_Validate.validator(), asyncHandler(main_Controller.addItem));
 
 router.put('/edit/:id', asyncHandler(main_Controller.editItem));
 
