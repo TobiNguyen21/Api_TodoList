@@ -4,7 +4,7 @@ const databaseConfig = require('../configs/database');
 const schema = new mongoose.Schema({
     name: String,
     description: String,
-    careers: [String],
+    careers: [{ type: mongoose.Schema.ObjectId, ref: 'Careers' }],
     type: [String],
     local: String,
     web: String,

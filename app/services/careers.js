@@ -27,6 +27,7 @@ module.exports = {
         if (option.task == 'all') {
             return await MainModel
                 .find(find)
+                .populate({ path: 'restaurants', select: 'name' })
                 .select(select)
                 .sort(sort).skip(skip).limit(limit);
         }
