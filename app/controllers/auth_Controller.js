@@ -1,5 +1,6 @@
 const main_Service = require('../services/auth');
 
+const saveTokenToCookie = require('../utils/saveTokenToCookie');
 const validateReq = require('../utils/validateReq');
 
 module.exports = {
@@ -9,10 +10,9 @@ module.exports = {
 
         if (!err) {
             const token = await main_Service.create(item);
-            res.status(201).json({
-                success: true,
-                data: token
-            })
+            if (token) {
+                saveTokenToCookie(res, 201, token);
+            }
         }
     },
 }

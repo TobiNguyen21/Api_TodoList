@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan')
 const colors = require('colors');
+const cookieParser = require('cookie-parser');
 const errorHandler = require('./app/middleware/error');
 
 const mongoose = require('mongoose');
@@ -30,6 +31,7 @@ app.locals.systemConfig = systemConfig;
 // Setup router
 app.use('/api/v1', require('./app/routes/index'));
 app.use(errorHandler)
+app.use(cookieParser());
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
