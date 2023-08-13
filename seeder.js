@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const databaseConfig = require('./app/configs/database');
 
-const _dirFile_Items = __dirname + '/app/_data/items.json'; s
+const _dirFile_Items = __dirname + '/app/_data/items.json';
 const _dirFile_Careers = __dirname + '/app/_data/careers.json';
 const _dirFile_Users = __dirname + '/app/_data/user.json';
 
