@@ -5,5 +5,6 @@ module.exports = {
     ERROR_USERNAME: 'Chiều dài từ %d đến %d ký tự, và chỉ được chứa chữ, số và dấu gạch dưới (_)',
     ERROR_EMAIL: 'Email không hợp lệ',
     ERROR_ROLE: 'Role không hợp lệ',
-    ERROR_PASSWORD: 'Chiều dài từ %d đến %d ký tự'
+    ERROR_PASSWORD: 'Chiều dài từ %d đến %d ký tự',
+    ERROR_NO_TOKEN: 'Vui lòng đằng nhập tài khoản'
 }

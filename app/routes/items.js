@@ -4,8 +4,9 @@ const asyncHandler = require('../middleware/async')
 
 const main_Controller = require(`../controllers/items_Controller`);
 const main_Validate = require('../validates/items');
+const middle_verifyToken = require('../middleware/verifyToken');
 
-router.get('/', asyncHandler(main_Controller.getListItems));
+router.get('/', middle_verifyToken, asyncHandler(main_Controller.getListItems));
 
 router.get('/:id', asyncHandler(main_Controller.getItemById));
 
