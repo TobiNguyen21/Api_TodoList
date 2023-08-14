@@ -1,6 +1,9 @@
 const MainModel = require('../models/users');
 const ErrorResponse = require('../utils/ErrorResponse');
 
+const notifyConfig = require('../configs/notify');
+const SendEmail = require('../utils/sendEmail');
+
 module.exports = {
     create: async (item) => {
         const user = await new MainModel(item).save();
@@ -12,5 +15,30 @@ module.exports = {
             return new ErrorResponse(401, result.err);
         }
         return await result.user.getSignedJwtToken();
+    },
+    forgotPassword: async (email) => {
+        const user = await MainModel.findOne({ email: email });
+        if (!user) return new ErrorResponse(401, notifyConfig.ERROR_LOGIN.ERROR_EMAIL);
+
+        const resetToken = await user.resetPassword();
+        await user.save();
+
+        //create resetURL
+        const resetURL = `/api/v1/auth/resetPassword/${resetToken}`;
+        const message = `Truy cập vào link để đổi pass : ${resetURL}`;
+
+        try {
+            await SendEmail({
+                email: user.email,
+                subject: "Thay đổi PassWord",
+                message: message
+            })
+            return 'Vui lòng check email của bạn';
+        } catch (err) {
+            user.resetPassToken = undefined,
+                user.resetPassTokenExp = undefined,
+                await user.save();
+            return 'Không thể gửi email , vui lòng thử lại';
+        }
     }
 }
