@@ -9,7 +9,7 @@ const options = {
 }
 
 module.exports = {
-    validator: () => {
+    validatorForRegister: () => {
         const msgErr = {
             username: util.format(notify.ERROR_USERNAME, options.username.min, options.username.max),
             email: util.format(notify.ERROR_EMAIL),
@@ -24,5 +24,16 @@ module.exports = {
             check('password').isLength({ min: options.password.min, max: options.password.max }).withMessage(msgErr.password)
         ];
 
+    },
+    validatorForLogin: () => {
+        const msgErr = {
+            email: util.format(notify.ERROR_EMAIL),
+            password: util.format(notify.ERROR_PASSWORD, options.password.min, options.password.max)
+        }
+
+        return [
+            check('email').matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).withMessage(msgErr.email),
+            check('password').isLength({ min: options.password.min, max: options.password.max }).withMessage(msgErr.password)
+        ];
     }
 }

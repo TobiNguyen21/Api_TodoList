@@ -6,5 +6,9 @@ module.exports = {
     ERROR_EMAIL: 'Email không hợp lệ',
     ERROR_ROLE: 'Role không hợp lệ',
     ERROR_PASSWORD: 'Chiều dài từ %d đến %d ký tự',
-    ERROR_NO_TOKEN: 'Vui lòng đằng nhập tài khoản'
+    ERROR_NO_TOKEN: 'Vui lòng đằng nhập tài khoản',
+    ERROR_LOGIN: {
+        ERROR_EMAIL: 'Email không tồn tại',
+        ERROR_PASSWORD: 'Password không đúng'
+    }
 }

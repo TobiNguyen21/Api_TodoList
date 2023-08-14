@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const databaseConfig = require('../configs/database');
 const systemConfig = require('../configs/system');
+const notifyConfig = require('../configs/notify');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -22,6 +23,16 @@ schema.pre('save', function (next) {
 
 schema.methods.getSignedJwtToken = function () {
     return jwt.sign({ id: this._id }, systemConfig.JWT_SECRET, { expiresIn: systemConfig.JWT_EXP });
-}
+};
+
+schema.statics.findByCredentials = async function (email, password) {
+    const user = await this.findOne({ email: email });
+    if (!user) return { err: notifyConfig.ERROR_LOGIN.ERROR_EMAIL };
+
+    const isMatch = bcrypt.compareSync(password, user.password);
+    if (!isMatch) return { err: notifyConfig.ERROR_LOGIN.ERROR_PASSWORD };
+    return { user };
+
+};
 
 module.exports = mongoose.model(databaseConfig.col_users, schema);
