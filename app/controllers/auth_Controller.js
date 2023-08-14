@@ -45,5 +45,21 @@ module.exports = {
             success: true,
             data: result
         })
+    },
+    resetPassword_Controller: async (req, res, next) => {
+        const err = validateReq(req, res, next);
+        if (!err) {
+            const result = await main_Service.resetPassword({ resetToken: req.params.resetToken, password: req.body.password });
+            if (result.statusCode === 401) {
+                res.status(401).json({
+                    success: true,
+                    message: result.message
+                })
+            }
+            res.status(200).json({
+                success: true,
+                data: result
+            })
+        }
     }
 }

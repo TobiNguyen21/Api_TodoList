@@ -35,5 +35,14 @@ module.exports = {
             check('email').matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).withMessage(msgErr.email),
             check('password').isLength({ min: options.password.min, max: options.password.max }).withMessage(msgErr.password)
         ];
+    },
+    validatePassword: () => {
+        const msgErr = {
+            password: util.format(notify.ERROR_PASSWORD, options.password.min, options.password.max)
+        }
+
+        return [
+            check('password').isLength({ min: options.password.min, max: options.password.max }).withMessage(msgErr.password)
+        ];
     }
 }

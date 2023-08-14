@@ -10,5 +10,6 @@ module.exports = {
     ERROR_LOGIN: {
         ERROR_EMAIL: 'Email không tồn tại',
         ERROR_PASSWORD: 'Password không đúng'
-    }
+    },
+    ERROR_RESETPASSWORD: 'Lấy lại mật khẩu thất bại'
 }

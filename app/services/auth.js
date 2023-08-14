@@ -4,6 +4,8 @@ const ErrorResponse = require('../utils/ErrorResponse');
 const notifyConfig = require('../configs/notify');
 const SendEmail = require('../utils/sendEmail');
 
+const crypto = require("crypto");
+
 module.exports = {
     create: async (item) => {
         const user = await new MainModel(item).save();
@@ -35,10 +37,30 @@ module.exports = {
             })
             return 'Vui lòng check email của bạn';
         } catch (err) {
-            user.resetPassToken = undefined,
-                user.resetPassTokenExp = undefined,
-                await user.save();
+            user.resetPassToken = undefined;
+            user.resetPassTokenExp = undefined;
+            await user.save();
             return 'Không thể gửi email , vui lòng thử lại';
         }
+    },
+    resetPassword: async ({ resetToken, password }) => {
+        const hash_resetPassToken = crypto
+            .createHash('sha256')
+            .update(resetToken)
+            .digest('hex');
+
+        const user = await MainModel.findOne({
+            resetPassToken: hash_resetPassToken,
+            resetPassTokenExp: { $gt: Date.now() }
+        })
+
+        if (!user) return new ErrorResponse(401, notifyConfig.ERROR_RESETPASSWORD);
+
+        user.password = password;
+        user.resetPassToken = undefined;
+        user.resetPassTokenExp = undefined;
+
+        await user.save();
+        return user;
     }
 }
