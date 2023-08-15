@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./app/middleware/error');
+const rateLimit = require('express-rate-limit');
 
 const mongoose = require('mongoose');
 const app = express();
@@ -16,6 +17,13 @@ app.use(cors());
 app.use(helmet());// set header sc
 app.use(xss());
 app.use(morgan('tiny'));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+});
+
+app.use(limiter);
 
 const systemConfig = require('./app/configs/system');
 const databaseConfig = require('./app/configs/database');
