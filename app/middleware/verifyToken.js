@@ -8,9 +8,14 @@ const users_service = require('../services/users');
 
 const middle_verifyToken = asyncHandler(async (req, res, next) => {
     // Get token
-    const token = (req.header('authorization')?.startsWith('Bearer')) ? req.header('authorization').split(' ')[1] : '';
+    let token = '';
+    if (req.header('authorization')?.startsWith('Bearer')) {
+        token = req.header('authorization').split(' ')[1]
+    } else if (req.cookies?.token) {
+        token = req.cookies.token;
+    }
 
-    if (!token) next(new ErrorResponse(401, notifyConfig.ERROR_NO_TOKEN));
+    if (!token) return next(new ErrorResponse(401, notifyConfig.ERROR_NO_TOKEN));
 
     try {
         const data_decoded = jwt.verify(token, systemConfig.JWT_SECRET);
@@ -18,7 +23,7 @@ const middle_verifyToken = asyncHandler(async (req, res, next) => {
         req.user = await users_service.listItems({ id: data_decoded.id }, { task: 'one' });
         next();
     } catch (error) {
-        next(new ErrorResponse(401, notifyConfig.ERROR_NO_TOKEN));
+        return next(new ErrorResponse(401, notifyConfig.ERROR_NO_TOKEN));
     }
 });
 

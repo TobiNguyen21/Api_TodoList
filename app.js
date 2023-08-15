@@ -29,9 +29,9 @@ app.locals.systemConfig = systemConfig;
 })();
 
 // Setup router
-app.use('/api/v1', require('./app/routes/index'));
-app.use(errorHandler)
 app.use(cookieParser());
+app.use('/api/v1', require('./app/routes/index'));
+app.use(errorHandler);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
