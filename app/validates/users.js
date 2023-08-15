@@ -5,7 +5,7 @@ const util = require('util');
 const options = {
     username: { min: 3, max: 80 },
     password: { min: 8, max: 20 },
-    roles: ['user', 'publisher']
+    roles: ['user', 'publisher', 'admin']
 }
 
 module.exports = {

@@ -2,6 +2,8 @@ const main_Service = require('../services/users');
 
 const validateReq = require('../utils/validateReq');
 
+const bcrypt = require("bcrypt");
+
 module.exports = {
     getListItems: async (req, res, next) => {
         const data = await main_Service.listItems(req.query, { 'task': 'all' })
@@ -37,6 +39,7 @@ module.exports = {
         const err = validateReq(req, res, next);
 
         if (!err) {
+            body.password = bcrypt.hashSync(body.password, 10);
             const data = await main_Service.editItem({ 'id': req.params.id, 'body': body }, { 'task': 'edit' })
             res.status(200).json({
                 success: true,
