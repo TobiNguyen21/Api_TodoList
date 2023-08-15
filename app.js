@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan')
 const colors = require('colors');
+const helmet = require('helmet');
+const xss = require('xss-clean');
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./app/middleware/error');
 
@@ -11,6 +13,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+app.use(helmet());// set header sc
+app.use(xss());
 app.use(morgan('tiny'));
 
 const systemConfig = require('./app/configs/system');
